@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import ReactFlow, {
+import { 
+  ReactFlow,
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
-} from 'react-flow-renderer';
+} from '@xyflow/react'; 
+
+import '@xyflow/react/dist/style.css';
+
+import { useState } from 'react';
 
 const FlowEditor = ({ nodes, setNodes, edges, setEdges }) => {
   const [selectedElements, setSelectedElements] = useState([]);
@@ -21,7 +25,11 @@ const FlowEditor = ({ nodes, setNodes, edges, setEdges }) => {
   };
 
   const onSelectionChange = ({ nodes, edges }) => {
-    setSelectedElements([...nodes, ...edges]);
+    const newSelection = ([...nodes, ...edges]);
+    if (newSelection.length !== selectedElements.length ||
+      !newSelection.every((el, idx) => el.id === selectedElements[idx]?.id)) {
+    setSelectedElements(newSelection);
+    }
   };
 
   const handleDelete = () => {
