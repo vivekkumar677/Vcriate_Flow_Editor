@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ProductList from './components/ProductList';
+import FlowEditor from './components/FlowEditor';
 
-function App() {
+const App = () => {
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
+
+  const handleSelectProduct = (product) => {
+    const newNode = {
+      id: `${product.id}`,
+      type: 'customNode',
+      position: { x: Math.random() * 500, y: Math.random() * 500 },
+      data: { name: product.name, price: product.price },
+    };
+    setNodes((nds) => nds.concat(newNode));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex h-screen">
+      <ProductList onSelectProduct={handleSelectProduct} />
+      <FlowEditor nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} />
     </div>
   );
-}
+};
 
 export default App;
+
