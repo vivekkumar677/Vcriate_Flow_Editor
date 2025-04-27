@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.product-list, .flow-editor {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.product-item {
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.product-item:hover {
+  background: #f0f0f0;
+  color: blue;
+}
+
+.node {
+  padding: 10px;
+  background-color: #f0f0f0;
+  margin: 10px;
+}
+
+.node button {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.flow-editor {
+  flex: 1;
+  background: #fafafa;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
