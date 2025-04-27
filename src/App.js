@@ -6,20 +6,10 @@ import 'reactflow/dist/style.css';
 import './App.css';
 
 const App = () => {
-  const [products, setProducts] = useState([]);
+  
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [idCounter, setIdCounter] = useState(1);
-
-  // Fetch products from API
-  useEffect(() => {
-    async function fetchProducts() {
-      const res = await fetch('https://dummyjson.com/products');
-      const data = await res.json();
-      setProducts(data.products);
-    }
-    fetchProducts();
-  }, []);
 
   const addProductAsNode = useCallback((product) => {
     const newNode = {
@@ -36,11 +26,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="product-list">
-        <h2>Products List</h2>
-        <ProductList products={products} onProductClick={addProductAsNode} />
-      </div>
-
+      <ProductList onProductClick={addProductAsNode} />
       <div className="flow-editor">
         <ReactFlowProvider>
           <FlowEditor nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges} />
