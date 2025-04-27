@@ -5,9 +5,10 @@ const Node = ({ node, onDelete }) => {
     <div className="node">
       <span>{node.name} - ${node.price}</span>
       <button onClick={() => onDelete(node.id)}>Delete</button>
+      console.log("delete", node);
+      
     </div>
   );
 };
 
 export default Node;
-

@@ -26,10 +26,10 @@ const App = () => {
       id: idCounter.toString(),
       type: 'default',
       data: { label: `${product.title} ($${product.price})` },
-      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      position: { x: Math.random() * 500, y: Math.random() * 400 },
       draggable: true,
     };
-    setNodes((nds) => nds.concat(newNode));
+    setNodes((nds) => [...nds, newNode]);
     setIdCounter((id) => id + 1);
   }, [idCounter]);
   

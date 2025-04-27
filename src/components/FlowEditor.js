@@ -1,12 +1,11 @@
 
-import ReactFlow, { addEdge, MiniMap, Controls, Background } from 'reactflow';
+import ReactFlow, { addEdge, MiniMap, Controls, Background, useReactFlow } from 'reactflow';
 import { useCallback } from 'react';
+import Node from './Node';
 
 export default function FlowEditor({ nodes, setNodes, edges, setEdges }) {
   // Handle edge connection
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
-  console.log(edges);
-  
 
   // Handle node deletion
   const onNodesDelete = useCallback((deleted) => {
@@ -39,4 +38,18 @@ export default function FlowEditor({ nodes, setNodes, edges, setEdges }) {
       <Background />
     </ReactFlow>
   );
+};
+
+function CustomNode({ id, data }) {
+  const { setNodes, setEdges } = useReactFlow();
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this node?')) {
+      setNodes((nds) => nds.filter((node) => node.id !== id));
+      setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+    }
+  };
+
+  return <Node id={id} label={data.label} onDelete={handleDelete} />;
 }
+
