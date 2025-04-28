@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
-const ProductList = ({onProductClick }) => {
 
+const ProductList = ({ onProductClick }) => {
   const [products, setProducts] = useState([]);
-  // Fetch products from API
-    useEffect(() => {
-      async function fetchProducts() {
-        const res = await fetch('https://dummyjson.com/products');
-        const data = await res.json();
-        setProducts(data.products);
-      }
-      fetchProducts();
-    }, []);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const res = await fetch('https://dummyjson.com/products');
+      const data = await res.json();
+      setProducts(data.products);
+    }
+    fetchProducts();
+  }, []);
 
   return (
     <div className="product-list">
-      <div className="product-list">
-        <h2>Products List</h2>
-        <ProductList products={products}/>
-      </div>
+      <h2>Products List</h2>
       {products.map((product) => (
         <div
           key={product.id}

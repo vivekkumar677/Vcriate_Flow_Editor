@@ -1,63 +1,46 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import ReactFlow, { addEdge, Background, Controls, MiniMap } from 'reactflow';
+
+import React, { useCallback } from 'react';
+import ReactFlow, { addEdge, Background, Controls, MiniMap, applyNodeChanges, applyEdgeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'default',
-    data: { label: 'Start Node' },
-    position: { x: 250, y: 5 },
-  },
-];
-
-const initialEdges = [];
-
-function FlowEditor() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-  const [selectedNode, setSelectedNode] = useState(null);
-
-  // Handle connecting two nodes
+function FlowEditor({ nodes, setNodes, edges, setEdges }) {
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+    [setEdges]
   );
 
-  // Handle selecting a node
-  const onNodeClick = (event, node) => {
-    setSelectedNode(node);
-  };
-
-  // Handle key press for deletion
-  const onKeyDown = useCallback((event) => {
-    if ((event.key === 'Delete' || event.key === 'Backspace') && selectedNode) {
-      setNodes((nds) => nds.filter((node) => node.id !== selectedNode.id));
+  const onNodesDelete = useCallback(
+    (deleted) => {
+      const deletedIds = deleted.map(node => node.id);
+      setNodes((nds) => nds.filter((node) => !deletedIds.includes(node.id)));
       setEdges((eds) =>
-        eds.filter(
-          (edge) =>
-            edge.source !== selectedNode.id && edge.target !== selectedNode.id
-        )
+        eds.filter((edge) => !deletedIds.includes(edge.source) && !deletedIds.includes(edge.target))
       );
-      setSelectedNode(null);
-    }
-  }, [selectedNode]);
+    },
+    [setNodes, setEdges]
+  );
 
-  useEffect(() => {
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [onKeyDown]);
+  const onEdgesDelete = useCallback(
+    (deleted) => {
+      const deletedIds = deleted.map(edge => edge.id);
+      setEdges((eds) => eds.filter((edge) => !deletedIds.includes(edge.id)));
+    },
+    [setEdges]
+  );
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        onNodesChange={setNodes}
-        onEdgesChange={setEdges}
+        onNodesChange={(changes) => setNodes((nds) => applyNodeChanges(changes, nds))}
+        onEdgesChange={(changes) => setEdges((eds) => applyEdgeChanges(changes, eds))}
         onConnect={onConnect}
-        onNodeClick={onNodeClick}
+        onNodesDelete={onNodesDelete}
+        onEdgesDelete={onEdgesDelete}
         fitView
+        multiSelectionKeyCode="Shift"
+        selectNodesOnDrag
       >
         <Background />
         <MiniMap />
@@ -67,4 +50,4 @@ function FlowEditor() {
   );
 }
 
-export default FlowEditor;
+export default FlowEditor;

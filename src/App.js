@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import ProductList from './components/ProductList';
 import FlowEditor from './components/FlowEditor';
@@ -15,7 +15,7 @@ const App = () => {
     const newNode = {
       id: idCounter.toString(),
       type: 'default',
-      data: { label: `${product.title} ($${product.price})` },
+      data: { label: `${product.title} (${product.price})` },
       position: { x: Math.random() * 500, y: Math.random() * 400 },
       draggable: true,
     };
@@ -23,7 +23,6 @@ const App = () => {
     setIdCounter((id) => id + 1);
   }, [idCounter]);
   
-
   return (
     <div className="app">
       <ProductList onProductClick={addProductAsNode} />

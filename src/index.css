@@ -2,14 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .app {
   display: flex;
   height: 100vh;
-  width: 100%;
 }
 
 .product-list, .flow-editor {
   display: flex;
+  width: 300px;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  padding: 10px;
   flex-direction: column;
   margin: 10px;
 }
@@ -42,6 +46,7 @@
 .flow-editor {
   flex: 1;
   background: #fafafa;
+  height: 100%;
 }
 
 body {
